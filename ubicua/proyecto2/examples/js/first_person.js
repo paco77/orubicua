@@ -25,7 +25,7 @@ var viewAngle;
 var velocity;
 var oculusBridge;
 
-var cube;
+var cube,cube2;
 
 // Map for key states
 var keys = [];
@@ -46,7 +46,7 @@ function initScene() {
   camera = new THREE.PerspectiveCamera(45, aspectRatio, 1, 10000);
   camera.useQuaternion = true;
 
-  camera.position.set(100, 150, 100);
+  camera.position.set(0, 30, 130);
   camera.lookAt(scene.position);
 
   // Initialize the renderer
@@ -91,74 +91,85 @@ function initGeometry(){
   scene.add(floor);
   
   //add cube
-    var geometry = new THREE.BoxGeometry(5, 20, 5);
+    var geometry = new THREE.BoxGeometry(5, 5, 5);
     var material = new THREE.MeshBasicMaterial({color: 0x00ff11});
     cube = new THREE.Mesh(geometry, material);
-    cube.position.set(0, 20, 0);
+    cube.position.set(0, 0, 0);
     scene.add(cube);
+    
+    //add line
+    var geometry = new THREE.CylinderGeometry(1, 1, 1, 32);
+    var material = new THREE.MeshBasicMaterial({color: 0xff0000});
+//    material2.color 
+
+    cube2 = new THREE.Mesh(geometry, material);
+//    cubo2.
+    cube2.position.set(cube.position.x, cube.position.y+30, cube.position.z+120);
+//    cube2.position.set(camera.position.x, camera.position.y, camera.position.z-100);
+    scene.add(cube2);
+    
 
   // add some boxes.
   
-    var boxTexture = new THREE.ImageUtils.loadTexture( "textures/blue_blue.jpg" );
-    for(var i = 0; i < 200; i++){
-    var material = new THREE.MeshLambertMaterial({ emissive:0x505050, map: boxTexture, color: 0xffffff});
-    
-    var height = Math.random() * 150+10;
-    var width = Math.random() * 20 + 2;
-    
-    var box = new THREE.Mesh( new THREE.CubeGeometry(width, height, width), material);
-
-    box.position.set(Math.random() * 1000 - 500, height/2 ,Math.random() * 1000 - 500);
-    box.rotation.set(0, Math.random() * Math.PI * 2, 0);
-    
-    boxes.push(box);
+//    var boxTexture = new THREE.ImageUtils.loadTexture( "textures/blue_blue.jpg" );
+//    for(var i = 0; i < 200; i++){
+//    var material = new THREE.MeshLambertMaterial({ emissive:0x505050, map: boxTexture, color: 0xffffff});
+//    
+//    var height = Math.random() * 150+10;
+//    var width = Math.random() * 20 + 2;
+//    
+//    var box = new THREE.Mesh( new THREE.CubeGeometry(width, height, width), material);
+//
+//    box.position.set(Math.random() * 1000 - 500, height/2 ,Math.random() * 1000 - 500);
+//    box.rotation.set(0, Math.random() * Math.PI * 2, 0);
+//    
+//    boxes.push(box);
     //scene.add(box);
-  }
+//  }
 
-  var coreTexture = new THREE.ImageUtils.loadTexture( "textures/purple_blue.jpg" );
-  for(var i = 0; i < 50; i++){
-    var material = new THREE.MeshLambertMaterial({ emissive:0x505050, map: coreTexture, color: 0xffffff});
-    
-    var height = Math.random() * 100+30;
-    
-    var box = new THREE.Mesh( new THREE.CubeGeometry(height, height, height), material);
-
-    box.position.set(Math.random() * 1000 - 500, Math.random() * 150 - 300 ,Math.random() * 1000 - 500);
-    box.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
-    
-    core.push(box);
+//  var coreTexture = new THREE.ImageUtils.loadTexture( "textures/purple_blue.jpg" );
+//  for(var i = 0; i < 50; i++){
+//    var material = new THREE.MeshLambertMaterial({ emissive:0x505050, map: coreTexture, color: 0xffffff});
+//    
+//    var height = Math.random() * 100+30;
+//    
+//    var box = new THREE.Mesh( new THREE.CubeGeometry(height, height, height), material);
+//
+//    box.position.set(Math.random() * 1000 - 500, Math.random() * 150 - 300 ,Math.random() * 1000 - 500);
+//    box.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
+//    
+//    core.push(box);
     //scene.add(box);
-  }
+//  }
 
-  for(var i = 0; i < 100; i++){
-    var material = new THREE.MeshLambertMaterial({ emissive:0x008000, color: 0x00FF00});
-    
-    var size = Math.random() * 15+3;
-    
-    var box = new THREE.Mesh( new THREE.CubeGeometry(size, size*0.1, size*0.1), material);
-
-    box.position.set(Math.random() * 1000 - 500, Math.random() * 100 + 100 ,Math.random() * 1000 - 500);
-    //box.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
-    
-    var speedVector;
-    if(Math.random() > 0.5){
-      speedVector = new THREE.Vector3(0, 0, Math.random() * 1.5 + 0.5);
-      box.rotation.y = Math.PI / 2;
-    } else {
-      speedVector = new THREE.Vector3(Math.random() * 1.5 + 0.5, 0, 0);
-    }
-
-    dataPackets.push({
-      obj: box,
-      speed: speedVector
-    });
+//  for(var i = 0; i < 100; i++){
+//    var material = new THREE.MeshLambertMaterial({ emissive:0x008000, color: 0x00FF00});
+//    
+//    var size = Math.random() * 15+3;
+//    
+//    var box = new THREE.Mesh( new THREE.CubeGeometry(size, size*0.1, size*0.1), material);
+//
+//    box.position.set(Math.random() * 1000 - 500, Math.random() * 100 + 100 ,Math.random() * 1000 - 500);
+//    //box.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
+//    
+//    var speedVector;
+//    if(Math.random() > 0.5){
+//      speedVector = new THREE.Vector3(0, 0, Math.random() * 1.5 + 0.5);
+//      box.rotation.y = Math.PI / 2;
+//    } else {
+//      speedVector = new THREE.Vector3(Math.random() * 1.5 + 0.5, 0, 0);
+//    }
+//
+//    dataPackets.push({
+//      obj: box,
+//      speed: speedVector
+//    });
  //   scene.add(box);
-  }
+//  }
 }
 
 
 function init(){
-
   document.addEventListener('keydown', onKeyDown, false);
   document.addEventListener('keyup', onKeyUp, false);
   document.addEventListener('mousedown', onMouseDown, false);
@@ -203,7 +214,7 @@ function onResize() {
   if(!useRift){
     windowHalf = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
     aspectRatio = window.innerWidth / window.innerHeight;
-   
+    
     camera.aspect = aspectRatio;
     camera.updateProjectionMatrix();
    
@@ -348,37 +359,52 @@ function updateInput(delta) {
   }
 }
 
-
 function animate() {
   var delta = clock.getDelta();
   time += delta;
   
   updateInput(delta);
-  for(var i = 0; i < core.length; i++){
-    core[i].rotation.x += delta * 0.25;
-    core[i].rotation.y -= delta * 0.33;
-    core[i].rotation.z += delta * 0.1278;
-  }
+//  for(var i = 0; i < core.length; i++){
+//    core[i].rotation.x += delta * 0.25;
+//    core[i].rotation.y -= delta * 0.33;
+//    core[i].rotation.z += delta * 0.1278;
+//  }
 
   var bounds = 600;
-  for(var i = 0; i < dataPackets.length; i++){
-    dataPackets[i].obj.position.add( dataPackets[i].speed);
-    if(dataPackets[i].obj.position.x < -bounds) {
-      dataPackets[i].obj.position.x = bounds;
-    } else if(dataPackets[i].obj.position.x > bounds){
-      dataPackets[i].obj.position.x = -bounds;
-    }
-    if(dataPackets[i].obj.position.z < -bounds) {
-      dataPackets[i].obj.position.z = bounds;
-    } else if(dataPackets[i].obj.position.z > bounds){
-      dataPackets[i].obj.position.z = -bounds;
-    }
-  }
+//  for(var i = 0; i < dataPackets.length; i++){
+//    dataPackets[i].obj.position.add( dataPackets[i].speed);
+//    if(dataPackets[i].obj.position.x < -bounds) {
+//      dataPackets[i].obj.position.x = bounds;
+//    } else if(dataPackets[i].obj.position.x > bounds){
+//      dataPackets[i].obj.position.x = -bounds;
+//    }
+//    if(dataPackets[i].obj.position.z < -bounds) {
+//      dataPackets[i].obj.position.z = bounds;
+//    } else if(dataPackets[i].obj.position.z > bounds){
+//      dataPackets[i].obj.position.z = -bounds;
+//    }
+//  }
 
   
   if(render()){
     requestAnimationFrame(animate);  
   }
+  pcam = camera.position;
+  pcub = cube.position;
+  cube2.position.set(pcam.x, pcam.y-1, pcam.z);
+  pcub2 = cube2.position;
+  xP = Math.pow((pcub.x - pcub2.x), 2);  
+  yP = Math.pow((pcub.y - pcub2.y), 2);  
+  zP = Math.pow((pcub.z - pcub2.z), 2);  
+  if ( (xP + yP + zP) <= 25){    //5: Radio del elemento a interactuar
+      cube.material.color.setHex(0xff00ff);
+      document.getElementById('tocando').textContent = "Tocando cubo";
+      
+  }else{
+      cube.material.color.setHex(0x00ff11);
+      document.getElementById('tocando').textContent = "Nariz de bruja";
+  }
+  
 }
 
 function crashSecurity(e){
@@ -401,8 +427,8 @@ function render() {
     }else{
       controls.update();
       
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+//      cube.rotation.x += 0.01;
+//      cube.rotation.y += 0.01;
 
       renderer.render(scene, camera);
     }  
