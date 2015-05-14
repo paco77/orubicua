@@ -26,7 +26,6 @@ var velocity;
 var oculusBridge;
 
 var cube,cube2;
-var text1;
 
 // Map for key states
 var keys = [];
@@ -47,7 +46,7 @@ function initScene() {
   camera = new THREE.PerspectiveCamera(45, aspectRatio, 1, 10000);
   camera.useQuaternion = true;
 
-  camera.position.set(0, 3, 50);
+  camera.position.set(0, 30, 130);
   camera.lookAt(scene.position);
 
   // Initialize the renderer
@@ -92,81 +91,81 @@ function initGeometry(){
   scene.add(floor);
   
   //add cube
-    var geometryCubo = new THREE.BoxGeometry(5, 5, 5);
-    var materialCubo = new THREE.MeshBasicMaterial({color: 0x00ff11});
-    cube = new THREE.Mesh(geometryCubo, materialCubo);
-    cube.position.set(-30, 2.5, 0);
-    //add line
-    var geometryPos = new THREE.CylinderGeometry(1, 1, 1, 32);
-    var materialPos = new THREE.MeshBasicMaterial({color: 0xffffff,transparent: true,opacity: 0});
-    cube2 = new THREE.Mesh(geometryPos, materialPos);
-//    cube2.position.set(cube.position.x, cube.position.y+30, cube.position.z+120);
-    
-    var materialT1 = new THREE.MeshPhongMaterial({
-        color: 0x22cc00
-    });
-    var geometryT1 = new THREE.TextGeometry('Acércate al cubo',{
-        size: 3,
-        height : 1,
-        curveSegments: 32,
-        font : "optimer", // helvetiker, optimer, gentilis, droid sans, droid serif
-        weight : "bold", // normal bold
-        style : "normal" // normal italic
-    });
-    THREE.GeometryUtils.center( geometryT1 );
-    text1 = new THREE.Mesh( geometryT1, materialT1 );
-    geometryT1.computeBoundingBox();
-    geometryT1.textWidth = geometryT1.boundingBox.max.x - geometryT1.boundingBox.min.x;
-    
-    text1.position.set(cube.position.x,cube.position.y+10,cube.position.z);
-    
-    pivot1 = new THREE.Object3D();
-    pivot1.position.set(text1.position.x,text1.position.y,text1.position.z);
-    pivot1.add(text1);
-    
-    
-//    cube2.position.set(camera.position.x, camera.position.y, camera.position.z-100);
-    
+    var geometry = new THREE.BoxGeometry(5, 5, 5);
+    var material = new THREE.MeshBasicMaterial({color: 0x00ff11});
+    cube = new THREE.Mesh(geometry, material);
+    cube.position.set(0, 0, 0);
     scene.add(cube);
+    
+    //add line
+    var geometry = new THREE.CylinderGeometry(1, 1, 1, 32);
+    var material = new THREE.MeshBasicMaterial({color: 0xff0000});
+//    material2.color 
+
+    cube2 = new THREE.Mesh(geometry, material);
+//    cubo2.
+    cube2.position.set(cube.position.x, cube.position.y+30, cube.position.z+120);
+//    cube2.position.set(camera.position.x, camera.position.y, camera.position.z-100);
     scene.add(cube2);
-    scene.add(text1);
-    scene.add(pivot1);
     
-    /**
-     * material de imagen
-     */
-    
-    var canvas2 = document.createElement("canvas");
-    var context = canvas2.getContext("2d");
-    var image0 = new Image();
-    var texture2 = new THREE.Texture(canvas2);
-    image0.onload = function() {
-        context.drawImage(image0, 0, 0);
-        texture2.needsUpdate = true;
-    };
-    image0.src = 'img/memorias/01.jpg';
-//    var imagenP = document.createElement("img");
-//    imagenP.setAttribute("src", "textures/blue_blue.jpg");
-//    imagenP.setAttribute("height", "768");
-//    imagenP.setAttribute("width", "1024");
-//    document.body.appendChild(imagenP);
-    
-    
-    var materialArray = [];
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/memorias/03.jpg' ) }));//derecha
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/memorias/04.jpg' ) }));//izquierda
-    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000 }));//arriba
-    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000 }));//abajo
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/memorias/01.jpg' ) }));//frente
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/memorias/rojo.jpg' ) }));//atrás
-    var gemetryImagen2d = new THREE.CubeGeometry( 53, 50, 53 );
-    var materialImagen2d = new THREE.MeshFaceMaterial(materialArray);
-    cuboImagen = new THREE.Mesh( gemetryImagen2d, materialImagen2d);
-    cuboImagen.position.set(0, 25, 0);
-    scene.add( cuboImagen );
-    
-    
-//    scene.add(text);
+
+  // add some boxes.
+  
+//    var boxTexture = new THREE.ImageUtils.loadTexture( "textures/blue_blue.jpg" );
+//    for(var i = 0; i < 200; i++){
+//    var material = new THREE.MeshLambertMaterial({ emissive:0x505050, map: boxTexture, color: 0xffffff});
+//    
+//    var height = Math.random() * 150+10;
+//    var width = Math.random() * 20 + 2;
+//    
+//    var box = new THREE.Mesh( new THREE.CubeGeometry(width, height, width), material);
+//
+//    box.position.set(Math.random() * 1000 - 500, height/2 ,Math.random() * 1000 - 500);
+//    box.rotation.set(0, Math.random() * Math.PI * 2, 0);
+//    
+//    boxes.push(box);
+    //scene.add(box);
+//  }
+
+//  var coreTexture = new THREE.ImageUtils.loadTexture( "textures/purple_blue.jpg" );
+//  for(var i = 0; i < 50; i++){
+//    var material = new THREE.MeshLambertMaterial({ emissive:0x505050, map: coreTexture, color: 0xffffff});
+//    
+//    var height = Math.random() * 100+30;
+//    
+//    var box = new THREE.Mesh( new THREE.CubeGeometry(height, height, height), material);
+//
+//    box.position.set(Math.random() * 1000 - 500, Math.random() * 150 - 300 ,Math.random() * 1000 - 500);
+//    box.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
+//    
+//    core.push(box);
+    //scene.add(box);
+//  }
+
+//  for(var i = 0; i < 100; i++){
+//    var material = new THREE.MeshLambertMaterial({ emissive:0x008000, color: 0x00FF00});
+//    
+//    var size = Math.random() * 15+3;
+//    
+//    var box = new THREE.Mesh( new THREE.CubeGeometry(size, size*0.1, size*0.1), material);
+//
+//    box.position.set(Math.random() * 1000 - 500, Math.random() * 100 + 100 ,Math.random() * 1000 - 500);
+//    //box.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
+//    
+//    var speedVector;
+//    if(Math.random() > 0.5){
+//      speedVector = new THREE.Vector3(0, 0, Math.random() * 1.5 + 0.5);
+//      box.rotation.y = Math.PI / 2;
+//    } else {
+//      speedVector = new THREE.Vector3(Math.random() * 1.5 + 0.5, 0, 0);
+//    }
+//
+//    dataPackets.push({
+//      obj: box,
+//      speed: speedVector
+//    });
+ //   scene.add(box);
+//  }
 }
 
 
@@ -392,20 +391,18 @@ function animate() {
   }
   pcam = camera.position;
   pcub = cube.position;
-//  cube2.position.set(pcam.x, pcam.y-1, pcam.z);
-  cube2.position.set(pcam.x, pcam.y-10, pcam.z);
+  cube2.position.set(pcam.x, pcam.y-1, pcam.z);
   pcub2 = cube2.position;
   xP = Math.pow((pcub.x - pcub2.x), 2);  
   yP = Math.pow((pcub.y - pcub2.y), 2);  
   zP = Math.pow((pcub.z - pcub2.z), 2);  
-//  if ( (xP + yP + zP) <= 2500){    //5: Radio del elemento a interactuar
-  if ( (xP + yP + zP) <= 500){    //distancia a la cual se hará contacto
+  if ( (xP + yP + zP) <= 25){    //5: Radio del elemento a interactuar
       cube.material.color.setHex(0xff00ff);
-      document.getElementById('tocando').textContent = "Activo";
+      document.getElementById('tocando').textContent = "Tocando cubo";
       
   }else{
       cube.material.color.setHex(0x00ff11);
-      document.getElementById('tocando').textContent = "Inactivo";
+      document.getElementById('tocando').textContent = "Nariz de bruja";
   }
   
 }
@@ -429,9 +426,12 @@ function render() {
       riftCam.render(scene, camera);
     }else{
       controls.update();
+      
+//      cube.rotation.x += 0.01;
+//      cube.rotation.y += 0.01;
+
       renderer.render(scene, camera);
-    } 
-    text1.rotation.y +=.01;
+    }  
   } catch(e){
     console.log(e);
     if(e.name == "SecurityError"){
