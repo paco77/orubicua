@@ -449,7 +449,7 @@ function creaIntro(){
     geometryImagen2d = new THREE.CubeGeometry( 1, 8, 10 );
     var materialArray = [];
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//derecha
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('img/caratula.png') }));//izquierda
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('img/caratula.jpg') }));//izquierda
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//arriba
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//abajo
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//frente
@@ -478,10 +478,10 @@ function creaDiapDer(){
 }
 function creaPreguntas(){
     geometryImagen2d = new THREE.CubeGeometry( 5, 50, 120 );
-    preguntas.push(creaDiapositiva(580,25,200,'img/preguntas/1.jpg',1));
-    preguntas.push(creaDiapositiva(580,25,600,'img/preguntas/2.jpg',1));
-    preguntas.push(creaDiapositiva(420,25,200,'img/preguntas/3.jpg',0));
-    preguntas.push(creaDiapositiva(420,25,600,'img/preguntas/4.jpg',0));
+    preguntas.push(creaDiapositiva(580,25,200,'img/preguntas/p1.jpg',1));
+    preguntas.push(creaDiapositiva(580,25,600,'img/preguntas/p2.jpg',1));
+    preguntas.push(creaDiapositiva(420,25,200,'img/preguntas/p3.jpg',0));
+    preguntas.push(creaDiapositiva(420,25,600,'img/preguntas/p4.jpg',0));
 }
 function creaDiapositiva(x,y,z,ruta,i_imagen){
     materialArray = arreglomaterialesDiap();
