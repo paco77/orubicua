@@ -25,8 +25,8 @@ var viewAngle;
 var velocity;
 var oculusBridge;
 
-var cube,cube2;
-var text1;
+var cube,posicion;
+//var text1;
 
 // Map for key states
 var keys = [];
@@ -47,8 +47,9 @@ function initScene() {
   camera = new THREE.PerspectiveCamera(45, aspectRatio, 1, 10000);
   camera.useQuaternion = true;
 
-  camera.position.set(0, 3, 50);
-  camera.lookAt(scene.position);
+  camera.position.set(-700, 25, -100);
+    //camera.lookAt(new THREE.Vector3( 0.5, 0.0, 0.8 ));
+  //camera.lookAt(scene.position);
 
   // Initialize the renderer
   renderer = new THREE.WebGLRenderer({antialias:true});
@@ -79,95 +80,45 @@ function initLights(){
 var floorTexture;
 function initGeometry(){
 
-  floorTexture = new THREE.ImageUtils.loadTexture( "textures/tiles.jpg" );
-  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
-  floorTexture.repeat.set( 50, 50 );
-  floorTexture.anisotropy = 32;
+    floorTexture = new THREE.ImageUtils.loadTexture( "textures/6.jpg" );
+    floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set( 50, 50 );
+    floorTexture.anisotropy = 32;
 
-  var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, transparent:true, opacity:0.9 } );
-  var floorGeometry = new THREE.PlaneGeometry(1400, 1400, 50, 50);
-  var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-  floor.rotation.x = -Math.PI / 2;
+    var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, transparent:true, opacity:0.9 } );
+    var floorGeometry = new THREE.PlaneGeometry(1400, 1400, 50, 50);
+    var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = -Math.PI / 2;
 
-  scene.add(floor);
-  
-  //add cube
-    var geometryCubo = new THREE.BoxGeometry(5, 5, 5);
-    var materialCubo = new THREE.MeshBasicMaterial({color: 0x00ff11});
-    cube = new THREE.Mesh(geometryCubo, materialCubo);
-    cube.position.set(-30, 2.5, 0);
-    //add line
-    var geometryPos = new THREE.CylinderGeometry(1, 1, 1, 32);
-    var materialPos = new THREE.MeshBasicMaterial({color: 0xffffff,transparent: true,opacity: 0});
-    cube2 = new THREE.Mesh(geometryPos, materialPos);
-//    cube2.position.set(cube.position.x, cube.position.y+30, cube.position.z+120);
-    
-    var materialT1 = new THREE.MeshPhongMaterial({
-        color: 0x22cc00
-    });
-    var geometryT1 = new THREE.TextGeometry('Acércate al cubo',{
-        size: 3,
-        height : 1,
-        curveSegments: 32,
-        font : "optimer", // helvetiker, optimer, gentilis, droid sans, droid serif
-        weight : "bold", // normal bold
-        style : "normal" // normal italic
-    });
-    THREE.GeometryUtils.center( geometryT1 );
-    text1 = new THREE.Mesh( geometryT1, materialT1 );
-    geometryT1.computeBoundingBox();
-    geometryT1.textWidth = geometryT1.boundingBox.max.x - geometryT1.boundingBox.min.x;
-    
-    text1.position.set(cube.position.x,cube.position.y+10,cube.position.z);
-    
-    pivot1 = new THREE.Object3D();
-    pivot1.position.set(text1.position.x,text1.position.y,text1.position.z);
-    pivot1.add(text1);
-    
-    
-//    cube2.position.set(camera.position.x, camera.position.y, camera.position.z-100);
-    
+    scene.add(floor);
+
+    cuboImagen = [];
+    texts = [];
+    preguntas = [];
+    respuestas = [];
+
+
+    creaTextos();
+    creaPreguntas();
+    creaRespuestas();
+    creaParedes();
+    creaIntro();
+    creaDiapIzq();
+    creaDiapDer();
+
+
+    for(i=0;i<preguntas.length;i++){
+        scene.add( preguntas[i] );
+    }
     scene.add(cube);
-    scene.add(cube2);
-    scene.add(text1);
-    scene.add(pivot1);
-    
-    /**
-     * material de imagen
-     */
-    
-    var canvas2 = document.createElement("canvas");
-    var context = canvas2.getContext("2d");
-    var image0 = new Image();
-    var texture2 = new THREE.Texture(canvas2);
-    image0.onload = function() {
-        context.drawImage(image0, 0, 0);
-        texture2.needsUpdate = true;
-    };
-    image0.src = 'img/memorias/01.jpg';
-//    var imagenP = document.createElement("img");
-//    imagenP.setAttribute("src", "textures/blue_blue.jpg");
-//    imagenP.setAttribute("height", "768");
-//    imagenP.setAttribute("width", "1024");
-//    document.body.appendChild(imagenP);
-    
-    
-    var materialArray = [];
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/memorias/03.jpg' ) }));//derecha
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/memorias/04.jpg' ) }));//izquierda
-    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000 }));//arriba
-    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000 }));//abajo
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/memorias/01.jpg' ) }));//frente
-    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/memorias/rojo.jpg' ) }));//atrás
-    var gemetryImagen2d = new THREE.CubeGeometry( 53, 50, 53 );
-    var materialImagen2d = new THREE.MeshFaceMaterial(materialArray);
-    cuboImagen = new THREE.Mesh( gemetryImagen2d, materialImagen2d);
-    cuboImagen.position.set(0, 25, 0);
-    scene.add( cuboImagen );
-    
-    
-//    scene.add(text);
+    for(i=0;i<texts.length;i++){
+        scene.add( texts[i] );
+    }
+    for(i=0;i<cuboImagen.length;i++){
+        scene.add( cuboImagen[i] );
+    }
 }
+
 
 
 function init(){
@@ -361,54 +312,46 @@ function updateInput(delta) {
 }
 
 function animate() {
-  var delta = clock.getDelta();
-  time += delta;
-  
-  updateInput(delta);
-//  for(var i = 0; i < core.length; i++){
-//    core[i].rotation.x += delta * 0.25;
-//    core[i].rotation.y -= delta * 0.33;
-//    core[i].rotation.z += delta * 0.1278;
-//  }
-
-  var bounds = 600;
-//  for(var i = 0; i < dataPackets.length; i++){
-//    dataPackets[i].obj.position.add( dataPackets[i].speed);
-//    if(dataPackets[i].obj.position.x < -bounds) {
-//      dataPackets[i].obj.position.x = bounds;
-//    } else if(dataPackets[i].obj.position.x > bounds){
-//      dataPackets[i].obj.position.x = -bounds;
-//    }
-//    if(dataPackets[i].obj.position.z < -bounds) {
-//      dataPackets[i].obj.position.z = bounds;
-//    } else if(dataPackets[i].obj.position.z > bounds){
-//      dataPackets[i].obj.position.z = -bounds;
-//    }
-//  }
-
-  
-  if(render()){
-    requestAnimationFrame(animate);  
-  }
-  pcam = camera.position;
-  pcub = cube.position;
-//  cube2.position.set(pcam.x, pcam.y-1, pcam.z);
-  cube2.position.set(pcam.x, pcam.y-10, pcam.z);
-  pcub2 = cube2.position;
-  xP = Math.pow((pcub.x - pcub2.x), 2);  
-  yP = Math.pow((pcub.y - pcub2.y), 2);  
-  zP = Math.pow((pcub.z - pcub2.z), 2);  
-//  if ( (xP + yP + zP) <= 2500){    //5: Radio del elemento a interactuar
-  if ( (xP + yP + zP) <= 500){    //distancia a la cual se hará contacto
-      cube.material.color.setHex(0xff00ff);
-      document.getElementById('tocando').textContent = "Activo";
-      
-  }else{
-      cube.material.color.setHex(0x00ff11);
-      document.getElementById('tocando').textContent = "Inactivo";
-  }
-  
+    var delta = clock.getDelta();
+    time += delta;
+    updateInput(delta);
+    var bounds = 600;
+    if(render()){
+        requestAnimationFrame(animate);
+    }
+    evaluaRespuestas();
 }
+function evaluaRespuestas(){
+    var pcam = camera.position;
+    var xP,yP,zP;
+    for(i=0;i<respuestas.length;i++){
+        if(respuestas[i].evaluada == 1){
+            continue;
+        }
+        xP = Math.pow((respuestas[i].x - pcam.x), 2);
+        yP = Math.pow((respuestas[i].y - pcam.y), 2);
+        zP = Math.pow((respuestas[i].z - pcam.z), 2);
+        if ( (xP + yP + zP) <= 5000){    //distancia a la cual se hará contacto
+            respuestas[i].responde();
+            scene.remove(texts[respuestas[i].indiceTexto]);
+            if(i%2==0){
+                respuestas[i+1].evaluada = 1;
+                scene.remove(texts[respuestas[i+1].indiceTexto]);
+            }else{
+                respuestas[i-1].evaluada = 1;
+                scene.remove(texts[respuestas[i-1].indiceTexto]);
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
 
 function crashSecurity(e){
   oculusBridge.disconnect();
@@ -431,7 +374,7 @@ function render() {
       controls.update();
       renderer.render(scene, camera);
     } 
-    text1.rotation.y +=.01;
+    //text1.rotation.y +=.01;
   } catch(e){
     console.log(e);
     if(e.name == "SecurityError"){
@@ -448,4 +391,220 @@ function render() {
 window.onload = function() {
   init();
   animate();
+}
+
+
+
+function creaParedes(){
+    materialArray = arreglomateriales();
+    materialArray[2] = new THREE.MeshBasicMaterial( { color: 0x8B0000 });
+    materialArray[3] = new THREE.MeshBasicMaterial( { color: 0x8B0000 });
+    materialArray[3] = new THREE.MeshBasicMaterial( { color: 0x8B0000 });
+    materialArray[3] = new THREE.MeshBasicMaterial( { color: 0x8B0000 });
+    materialImagen2d = new THREE.MeshFaceMaterial(materialArray);
+    geometryPared = new THREE.CubeGeometry( 1400, 10, 1400 );
+
+    pared =new THREE.Mesh( geometryPared, materialImagen2d);
+    pared.position.set(0, 70, 0);
+    scene.add( pared );
+
+    materialArray = arreglomateriales();
+    materialImagen2d = new THREE.MeshFaceMaterial(materialArray);
+    geometryPared = new THREE.CubeGeometry( 1400, 70, 600 );
+
+    pared =new THREE.Mesh( geometryPared, materialImagen2d);
+    pared.position.set(0, 35, -450);
+    scene.add( pared );
+
+    materialArray = arreglomateriales();
+    materialImagen2d = new THREE.MeshFaceMaterial(materialArray);
+    geometryPared = new THREE.CubeGeometry( 1100, 70, 700 );
+
+    pared =new THREE.Mesh( geometryPared, materialImagen2d);
+    pared.position.set(-150, 35, 350);
+    scene.add( pared );
+
+    materialArray = arreglomateriales();
+    materialImagen2d = new THREE.MeshFaceMaterial(materialArray);
+    geometryPared = new THREE.CubeGeometry( 100, 70, 1000 );
+
+    pared =new THREE.Mesh( geometryPared, materialImagen2d);
+    pared.position.set(650, 35, 200);
+    scene.add( pared );
+}
+function creaIntro(){
+    geometryImagen2d = new THREE.CubeGeometry( 2, 10, 2 );
+    var materialArray = [];
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x600000 }));//derecha
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x600000 }));//izquierda
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//arriba
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//abajo
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x800000 }));//frente
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x800000 }));//atrás
+    materialImagen2d = new THREE.MeshFaceMaterial(materialArray);
+    d = new THREE.Mesh( geometryImagen2d, materialImagen2d);
+    d.position.set(-620, 5,-80);
+    cuboImagen.push(d);
+
+    geometryImagen2d = new THREE.CubeGeometry( 1, 8, 10 );
+    var materialArray = [];
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//derecha
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('img/caratula.png') }));//izquierda
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//arriba
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//abajo
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//frente
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//atrás
+    materialImagen2d = new THREE.MeshFaceMaterial(materialArray);
+    d = new THREE.Mesh( geometryImagen2d, materialImagen2d);
+    d.position.set(-620, 11,-80);
+    d.rotation.z = -.75;
+    cuboImagen.push(d);
+}
+function creaDiapIzq(){
+    geometryImagen2d = new THREE.CubeGeometry( 83, 50, 5 );
+    cuboImagen.push(creaDiapositiva(-400,25,-130,'img/presentacion/d2.jpg',4));
+    cuboImagen.push(creaDiapositiva(-200,25,-130,'img/presentacion/d4.jpg',4));
+    cuboImagen.push(creaDiapositiva(0,25,-130,'img/presentacion/d6.jpg',4));
+    cuboImagen.push(creaDiapositiva(200,25,-130,'img/presentacion/d8.jpg',4));
+    cuboImagen.push(creaDiapositiva(400,25,-130,'img/presentacion/d10.jpg',4));
+}
+function creaDiapDer(){
+    geometryImagen2d = new THREE.CubeGeometry( 83, 50, 5 );
+    cuboImagen.push(creaDiapositiva(-500,25,-20,'img/presentacion/d1.jpg',5));
+    cuboImagen.push(creaDiapositiva(-300,25,-20,'img/presentacion/d3.jpg',5));
+    cuboImagen.push(creaDiapositiva(-100,25,-20,'img/presentacion/d5.jpg',5));
+    cuboImagen.push(creaDiapositiva(100,25,-20,'img/presentacion/d7.jpg',5));
+    cuboImagen.push(creaDiapositiva(300,25,-20,'img/presentacion/d9.jpg',5));
+}
+function creaPreguntas(){
+    geometryImagen2d = new THREE.CubeGeometry( 5, 50, 120 );
+    preguntas.push(creaDiapositiva(580,25,200,'img/preguntas/1.jpg',1));
+    preguntas.push(creaDiapositiva(580,25,600,'img/preguntas/2.jpg',1));
+    preguntas.push(creaDiapositiva(420,25,200,'img/preguntas/3.jpg',0));
+    preguntas.push(creaDiapositiva(420,25,600,'img/preguntas/4.jpg',0));
+}
+function creaDiapositiva(x,y,z,ruta,i_imagen){
+    materialArray = arreglomaterialesDiap();
+    materialArray[i_imagen]= new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture(ruta) });
+    materialImagen2d = new THREE.MeshFaceMaterial(materialArray);
+    d = new THREE.Mesh( geometryImagen2d, materialImagen2d);
+    d.position.set(x, y,z);
+    return d;
+}
+function arreglomateriales( ){
+    //var materialArray = [];
+    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0x999999 }));//derecha
+    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0xaaaaaa }));//izquierda
+    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0x888888 }));//arriba
+    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0xbbbbbb }));//abajo
+    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0x999999 }));//frente
+    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0xcccccc }));//atrás
+    //return materialArray;
+    var materialArray = [];
+    //0xFFFACD
+    //0xB22222 0xA52A2A 0x8B0000
+    //0x2952CC 0xA27651 0x86593A
+    //0xB5ABB6
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x86593A }));//derecha
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x86593A }));//izquierda
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x8B0000 }));//arriba
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x8B0000 }));//abajo
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0xA27651 }));//frente
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0xA27651 }));//atrás
+    return materialArray;
+}
+function arreglomaterialesDiap(){
+    var materialArray = [];
+    materialArray.push(new THREE.MeshBasicMaterial( {color: 0x000000 }));//derecha
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//izquierda
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//arriba
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//abajo
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//frente
+    materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//atrás
+    return materialArray;
+}
+function creaTextos(){
+    texts.push(creaTexto('Cuestionario',0xffffff,599,50,-70,-1.57,1));
+    texts.push(creaTexto('->',0xffffff,599,20,-70,-1.57,1));
+}
+
+function creaTexto(cadena,color,x,y,z,r,h){
+    materialT = new THREE.MeshBasicMaterial({
+        color: color
+    });
+    geometryT = new THREE.TextGeometry(cadena,{
+        size: 15,
+        height : h,
+        curveSegments: 32,
+        font : "optimer", // helvetiker, optimer, gentilis, droid sans, droid serif
+        weight : "bold", // normal bold
+        style : "normal" // normal italic
+    });
+    THREE.GeometryUtils.center( geometryT );
+    t = new THREE.Mesh( geometryT, materialT );
+    geometryT.computeBoundingBox();
+    geometryT.textWidth = geometryT.boundingBox.max.x - geometryT.boundingBox.min.x;
+    t.position.set(x,y,z);
+    t.rotation.y = r;
+    return t;
+}
+function creaRespuestas(){
+
+    respuestas.push(new Respuesta('F',preguntas[0],-1.57,0,1,1));
+    respuestas.push(new Respuesta('V',preguntas[0],-1.57,1,1,1));
+
+    respuestas.push(new Respuesta('F',preguntas[1],-1.57,0,1,1));
+    respuestas.push(new Respuesta('V',preguntas[1],-1.57,1,1,1));
+
+    respuestas.push(new Respuesta('F',preguntas[2],1.57,0,1,0));
+    respuestas.push(new Respuesta('V',preguntas[2],1.57,1,1,0));
+
+    respuestas.push(new Respuesta('F',preguntas[3],1.57,0,1,0));
+    respuestas.push(new Respuesta('V',preguntas[3],1.57,1,1,0));
+
+}
+function Respuesta(texto,pregunta,rot,esCorrecta,res,antes){
+    this.evaluada = 0;
+    this.correcta = esCorrecta;
+    this.x = pregunta.position.x;
+    this.y = 20;
+    this.z = texto=='F'?pregunta.position.z-80:pregunta.position.z+80;
+    this.resx = antes?this.x-10:this.x+10;
+    this.resy = this.y-10;
+    this.resz = pregunta.position.z;
+    this.indiceTexto = texts.length;
+    this.res = res;
+    this.rot = rot;
+    texts.push(creaTexto(
+        texto,
+        texto=='F'?0xff0000:0x00ff00,
+        this.x,
+        this.y,
+        this.z,
+        rot,
+        1
+    ));
+    this.responde = function(){
+        respuesta = this;
+        if(respuesta.correcta) {
+            var target = document.getElementById('correctas');
+            target.textContent = parseInt(target.textContent) + 1 ;
+        }else{
+            var target = document.getElementById('incorrectas');
+            target.textContent = parseInt(target.textContent) + 1;
+
+        }
+        texts.push(creaTexto(
+            respuesta.res?'Verdadero':'falso',
+            respuesta.res?0x00ff00:0xff0000,
+            respuesta.resx,
+            respuesta.resy,
+            respuesta.resz,
+            respuesta.rot,
+            1
+        ));
+        scene.add(texts[texts.length-1]);
+        respuesta.evaluada = 1;
+
+    }
 }

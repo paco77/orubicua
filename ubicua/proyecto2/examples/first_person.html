@@ -46,55 +46,75 @@
 
   </head>
 
-  <body>
+<body>
     <a id="logo" class="offline" href="https://github.com/Instrument/oculus-bridge"></a>
     <div id="info">
-      <div class="button" id="toggle-render">toggle render mode</div> <div class="button" id="help">help</div>
-      <div id="help-text" style="display:none;">
+         <div class="button" id="toggle-render">toggle render mode</div> <div class="button" id="help">help</div>
+        <div id="help-text" style="display:none;">
         <h1>Controls - stereo mode:</h1>
         <section>
-          <div><label>forward:</label>W or UP</div>
-          <div><label>backward:</label>S or DOWN</div>
+              <div><label>forward:</label>W or UP</div>
+              <div><label>backward:</label>S or DOWN</div>
         </section>
 
         <section>
-          <div><label>straif left:</label>A or LEFT</div>
-          <div><label>straif right:</label>D or RIGHT</div>
+            <div><label>straif left:</label>A or LEFT</div>
+            <div><label>straif right:</label>D or RIGHT</div>
         </section>
 
         <section>
-          <div><label>turn left:</label>Q</div>
-          <div><label>turn right:</label>E</div>
+            <div><label>turn left:</label>Q</div>
+            <div><label>turn right:</label>E</div>
         </section>
 
         <section>
-          <div><label>jump:</label>SPACE</div>
+             <div><label>jump:</label>SPACE</div>
         </section>
 
         <h1>Controls - perspective mode:</h1>
         <section>
-          <div><label>orbit:</label>left-click + drag</div>
-          <div><label>pan:</label>right-click + drag</div>
-          <div><label>zoom:</label>mouse wheel</div>
+            <div><label>orbit:</label>left-click + drag</div>
+            <div><label>pan:</label>right-click + drag</div>
+            <div><label>zoom:</label>mouse wheel</div>
         </section>
-      </div>
-      <div id="tocando" style="
+        </div>
+        <div style="margin-top: 3px;
+            background-color: #404040;">
+            <div style="display:inline-block;padding: 10px;">
+                Correctas:
+            </div>
+
+            <div id="correctas" style="
            display: inline-block;
            color: #FFF;
            background-color: rgb(200, 64, 64);
-           padding: 10px;">
-          
-      </div>
+           padding: 10px;float: right;">
+                0
+            </div>
+        </div>
+        <div style="margin-top: 3px;
+background-color: #404040;">
+            <div style="display:inline-block;padding: 10px;">
+                Incorrectas:
+            </div>
+             <div id="incorrectas" style="
+            display: inline-block;
+            color: #FFF;
+            background-color: rgb(200, 64, 64);
+            padding: 10px;float: right;">
+                0
+             </div>
+        </div>
     </div>
 
     <div id="viewport"></div>
     <div id="security_error">
-      <p>This file must be served via HTTP to support the use of textures.</p>
-      <p>Please host this content via a web server of some kind and try again.</p>
+         <p>This file must be served via HTTP to support the use of textures.</p>
+         <p>Please host this content via a web server of some kind and try again.</p>
     </div>
     <div id="generic_error">
-      <p>Oh dang, something went wrong while trying to render the scene.</p>
-      <p>Exception: <span id="exception_message"></span></p>
+        <p>Oh dang, something went wrong while trying to render the scene.</p>
+        <p>Exception: <span id="exception_message"></span></p>
     </div>
     
     <script src="../web/build/OculusBridge.min.js"></script>
@@ -105,6 +125,7 @@
     <script src="fonts/helvetiker_regular.typeface.js"></script>
     <script src="fonts/optimer_bold.typeface.js"></script>
     <script src="fonts/optimer_regular.typeface.js"></script>
+    <script src="js/cannon.js"></script>
     <script src="js/first_person.js"></script>
   </body>
 </html>
