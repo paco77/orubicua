@@ -394,7 +394,10 @@ window.onload = function() {
 }
 
 
-
+/**
+ * Crea los cubos que representan las paredes del museo
+ * @returns {undefined}
+ */
 function creaParedes(){
     materialArray = arreglomateriales();
     materialArray[2] = new THREE.MeshBasicMaterial( { color: 0x8B0000 });
@@ -432,6 +435,10 @@ function creaParedes(){
     pared.position.set(650, 35, 200);
     scene.add( pared );
 }
+/**
+ * Crea el atrio con la carátula del proyecto al inicio del museo
+ * @returns {undefined}
+ */
 function creaIntro(){
     geometryImagen2d = new THREE.CubeGeometry( 2, 10, 2 );
     var materialArray = [];
@@ -460,6 +467,10 @@ function creaIntro(){
     d.rotation.z = -.75;
     cuboImagen.push(d);
 }
+/**
+ * Llena el arreglo de diapositivas del lado derecho del pasillo del museo
+ * @returns {undefined}
+ */
 function creaDiapIzq(){
     geometryImagen2d = new THREE.CubeGeometry( 83, 50, 5 );
     cuboImagen.push(creaDiapositiva(-400,25,-130,'img/presentacion/d2.jpg',4));
@@ -468,6 +479,10 @@ function creaDiapIzq(){
     cuboImagen.push(creaDiapositiva(200,25,-130,'img/presentacion/d8.jpg',4));
     cuboImagen.push(creaDiapositiva(400,25,-130,'img/presentacion/d10.jpg',4));
 }
+/**
+ * Llena el arreglo de diapositivas del lado derecho del pasillo del museo
+ * @returns {undefined}
+ */
 function creaDiapDer(){
     geometryImagen2d = new THREE.CubeGeometry( 83, 50, 5 );
     cuboImagen.push(creaDiapositiva(-500,25,-20,'img/presentacion/d1.jpg',5));
@@ -476,6 +491,11 @@ function creaDiapDer(){
     cuboImagen.push(creaDiapositiva(100,25,-20,'img/presentacion/d7.jpg',5));
     cuboImagen.push(creaDiapositiva(300,25,-20,'img/presentacion/d9.jpg',5));
 }
+/**
+ * Crea el arreglo de las diapositivas que contienen las preguntas 
+ * que se muestran en el cuestionario al final del museo
+ * @returns {undefined}
+ */
 function creaPreguntas(){
     geometryImagen2d = new THREE.CubeGeometry( 5, 50, 120 );
     preguntas.push(creaDiapositiva(580,25,200,'img/preguntas/p1.jpg',1));
@@ -483,6 +503,15 @@ function creaPreguntas(){
     preguntas.push(creaDiapositiva(420,25,200,'img/preguntas/p3.jpg',0));
     preguntas.push(creaDiapositiva(420,25,600,'img/preguntas/p4.jpg',0));
 }
+/**
+ * Crea una diapositiva con información en base a una imagen
+ * @param {type} x posición en x de la diapositiva
+ * @param {type} y posición en y d ela diapositiva
+ * @param {type} z posición en z de la diapositiva
+ * @param {type} ruta ruta de la imagen de la cara a mostrar hacia el pasillo
+ * @param {type} i_imagen indice de la diaposiva a mostrar
+ * @returns {d|Number|THREE.Mesh}
+ */
 function creaDiapositiva(x,y,z,ruta,i_imagen){
     materialArray = arreglomaterialesDiap();
     materialArray[i_imagen]= new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture(ruta) });
@@ -491,6 +520,10 @@ function creaDiapositiva(x,y,z,ruta,i_imagen){
     d.position.set(x, y,z);
     return d;
 }
+/**
+ * Crea un arreglo de materiales para el techo, inicializando las paredes de colores
+ * @returns {Array|arreglomateriales.materialArray}
+ */
 function arreglomateriales( ){
     var materialArray = [];
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0x86593A }));//derecha
@@ -501,6 +534,10 @@ function arreglomateriales( ){
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0xA27651 }));//atrás
     return materialArray;
 }
+/**
+ * Crea un arreglo de materiales para un cubo, inicializando las paredes de color negro
+ * @returns {Array|arreglomaterialesDiap.materialArray}
+ */
 function arreglomaterialesDiap(){
     var materialArray = [];
     materialArray.push(new THREE.MeshBasicMaterial( {color: 0x000000 }));//derecha
@@ -511,11 +548,25 @@ function arreglomaterialesDiap(){
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0x000000 }));//atrás
     return materialArray;
 }
+/**
+ * Crea de los textos que seran dibujados en la interfaz
+ * @returns {undefined}
+ */
 function creaTextos(){
     texts.push(creaTexto('Cuestionario',0xffffff,599,50,-70,-1.57,1));
     texts.push(creaTexto('->',0xffffff,599,20,-70,-1.57,1));
 }
-
+/**
+ * Crea una línea de texto que sera dibujada
+ * @param {type} cadena texto a dibujar
+ * @param {type} color color del texto
+ * @param {type} x posición en x
+ * @param {type} y posición en y
+ * @param {type} z posición en z
+ * @param {type} r rotación del texto con respecto a eje y
+ * @param {type} h altura del texto
+ * @returns {t|Number|Boolean|THREE.Mesh}
+ */
 function creaTexto(cadena,color,x,y,z,r,h){
     materialT = new THREE.MeshBasicMaterial({
         color: color
@@ -536,6 +587,10 @@ function creaTexto(cadena,color,x,y,z,r,h){
     t.rotation.y = r;
     return t;
 }
+/**
+ * Función que crea las respuestas posibles para cada diapositiva
+ * @returns {undefined}
+ */
 function creaRespuestas(){
 
     
