@@ -142,7 +142,7 @@ function init(){
   time          = Date.now();
   bodyAngle     = 0;
   bodyAxis      = new THREE.Vector3(0, 1, 0);
-  bodyPosition  = new THREE.Vector3(0, 15, 0);
+  bodyPosition  = new THREE.Vector3(-700, 15, -100);
   velocity      = new THREE.Vector3();
 
   initScene();
@@ -331,7 +331,7 @@ function evaluaRespuestas(){
         xP = Math.pow((respuestas[i].x - pcam.x), 2);
         yP = Math.pow((respuestas[i].y - pcam.y), 2);
         zP = Math.pow((respuestas[i].z - pcam.z), 2);
-        if ( (xP + yP + zP) <= 5000){    //distancia a la cual se hará contacto
+        if ( (xP + yP + zP) <= 1000){    //distancia a la cual se hará contacto
             respuestas[i].responde();
             scene.remove(texts[respuestas[i].indiceTexto]);
             if(i%2==0){
@@ -492,19 +492,7 @@ function creaDiapositiva(x,y,z,ruta,i_imagen){
     return d;
 }
 function arreglomateriales( ){
-    //var materialArray = [];
-    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0x999999 }));//derecha
-    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0xaaaaaa }));//izquierda
-    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0x888888 }));//arriba
-    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0xbbbbbb }));//abajo
-    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0x999999 }));//frente
-    //materialArray.push(new THREE.MeshBasicMaterial( { color: 0xcccccc }));//atrás
-    //return materialArray;
     var materialArray = [];
-    //0xFFFACD
-    //0xB22222 0xA52A2A 0x8B0000
-    //0x2952CC 0xA27651 0x86593A
-    //0xB5ABB6
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0x86593A }));//derecha
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0x86593A }));//izquierda
     materialArray.push(new THREE.MeshBasicMaterial( { color: 0x8B0000 }));//arriba
@@ -550,19 +538,32 @@ function creaTexto(cadena,color,x,y,z,r,h){
 }
 function creaRespuestas(){
 
+    
     respuestas.push(new Respuesta('F',preguntas[0],-1.57,0,1,1));
     respuestas.push(new Respuesta('V',preguntas[0],-1.57,1,1,1));
 
     respuestas.push(new Respuesta('F',preguntas[1],-1.57,0,1,1));
     respuestas.push(new Respuesta('V',preguntas[1],-1.57,1,1,1));
 
-    respuestas.push(new Respuesta('F',preguntas[2],1.57,0,1,0));
-    respuestas.push(new Respuesta('V',preguntas[2],1.57,1,1,0));
+    respuestas.push(new Respuesta('F',preguntas[2],1.57,1,0,0));
+    respuestas.push(new Respuesta('V',preguntas[2],1.57,0,0,0));
 
     respuestas.push(new Respuesta('F',preguntas[3],1.57,0,1,0));
     respuestas.push(new Respuesta('V',preguntas[3],1.57,1,1,0));
 
 }
+/**
+ * Crea un objeto que contiene la información
+ * necesaria para dibujar una respuesta en la pantalla
+ * @param {string} texto  una opción de respuesta
+ * @param {THREE.Mesh} pregunta superficie donde se encuentra dibujada la pregunta
+ * @param {float} rot rotación del texto con respecto al eje Y
+ * @param {boolean} esCorrecta indica si la opcion es correcta
+ * @param {boolean} res indica cual es la respuesta correcta
+ * @param {boolean} antes indica si la respuesta correcta se dibuja 
+ * antes o despues de la pregunta con respecto al eje X
+ * @returns {Respuesta} Objeto Respuesta
+ */
 function Respuesta(texto,pregunta,rot,esCorrecta,res,antes){
     this.evaluada = 0;
     this.correcta = esCorrecta;
@@ -605,6 +606,5 @@ function Respuesta(texto,pregunta,rot,esCorrecta,res,antes){
         ));
         scene.add(texts[texts.length-1]);
         respuesta.evaluada = 1;
-
     }
 }
