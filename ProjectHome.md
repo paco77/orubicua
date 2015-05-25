@@ -1,0 +1,1 @@
+proyecto para la materia de Computacion Ubicua que involucra el Oculus Rift y el Oculus Rift Bridge
